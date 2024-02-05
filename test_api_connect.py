@@ -1,61 +1,57 @@
-from zeep import Client
-from zeep.transports import Transport
-from zeep.cache import SqliteCache
-from requests import Session
-from requests.auth import HTTPBasicAuth
-from dotenv import load_dotenv
-import os
+import json
 
-# Load environment variables from .env file
-load_dotenv('simap_credentials.env')
+import requests
 
-# Replace these with your Simap credentials
-username = os.getenv('SIMAP_USERNAME')
-password = os.getenv('SIMAP_PASSWORD')
+# Base URL for the TED API
+base_url = "http://spendnetwork.com/api/ted_search/"
+
+# If you need to apply filters, construct the query string
+params = {
+    "country_code": "UK",  # Example filter for UK country code
+    "date_from": "01-03-2013",  # Example filter for date range start
+    "format": "json",  # To get the response in JSON format
+}
+
+# Send a GET request with the specified parameters
+response = requests.get(base_url, params=params)
+
+# Check if the request was successful
+if response.status_code == 200:
+    # Parse the JSON response
+    data = response.json()
+
+    # Now you can process the 'data' as per your requirements
+    # For example, print the first record of tenders
+    print(json.dumps(data[0], indent=2))
+else:
+    print(f"Failed to retrieve data: {response.status_code}")
+import json
+
+import requests
+
+# Base URL for the TED API
+base_url = "http://spendnetwork.com/api/ted_search/"
+
+# If you need to apply filters, construct the query string
+params = {
+    "country_code": "SW",  # Example filter for UK country code
+    "date_from": "01-03-2013",  # Example filter for date range start
+    "format": "json",  # To get the response in JSON format
+}
+
+# Send a GET request with the specified parameters
 
 
+response = requests.get(base_url, params=params)
 
-class Example:
-    def __init__(self):
-        pass
+# Check if the request was successful
+if response.status_code == 200:
 
-    def main(self, username, password):
-        servername = "www.simap.ch"
-        wsdl_url = f"https://{servername}/soapserver?wsdl"
+    # Parse the JSON response
+    data = response.json()
 
-        session = Session()
-        session.auth = HTTPBasicAuth(username, password)
-        transport = Transport(session=session, cache=SqliteCache())
-
-        client = Client(wsdl_url, transport=transport)
-
-        # Authentication
-        successful_authentication = client.service.getAuthentication()
-        if successful_authentication:
-            print("Authentication successful!")
-        else:
-            print("Authentication not successful!")
-            return
-
-        # Making requests
-        pageNo = 1
-        recordsPerPage = 10
-        timespanValue = "YEAR"
-        searchXml = f"<search pageNo=\"{pageNo}\" recordsPerPage=\"{recordsPerPage}\">" \
-                    f"<field name=\"TIMESPAN\"><value>{timespanValue}</value></field></search>"
-
-        print(f"getSearchNoticeList(\"{searchXml}\")")
-        count = client.service.getSearchNoticeCount(searchXml)
-        print("count:", count)
-
-        array_list = client.service.getSearchNoticeList(searchXml)
-        for notice_id in array_list:
-            print("id:", notice_id)
-            xml = client.service.getNoticeXml(notice_id)
-            print("xml:", xml)
-            html = client.service.getNoticeHtml(notice_id)
-            print("html:", html)
-
-if __name__ == "__main__":
-    example = Example()
-    example.main(username, password)
+    # Now you can process the 'data' as per your requirements
+    # For example, print the first record of tenders
+    print(json.dumps(data[0], indent=2))
+else:
+    print(f"Failed to retrieve data: {response.status_code}")
