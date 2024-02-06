@@ -27,7 +27,7 @@ def fetch_api_data_and_write_to_csv():
                 'nature_categorise_libelle', 'criteres', 'marche_public_simplifie',
                 'marche_public_simplifie_label', 'etat', 'descripteur_code', 'dc', 'descripteur_libelle',
                 'type_marche', 'type_marche_facette', 'type_avis', 'annonce_lie', 'annonces_anterieures',
-                'annonces_anterieures_schema_v110', 'source_schema', 'GESTION', 'DONNEES', 'url_avis'
+                'annonces_anterieures_schema_v110', 'source_schema', 'GESTION', 'DONNEES', 'url_avis','url_pdf'
             ]
             csvwriter = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=';')
 
@@ -43,7 +43,9 @@ def fetch_api_data_and_write_to_csv():
                 row['type_marche'] = iterable_to_string(result.get('type_marche', ''))
                 row['type_marche_facette'] = iterable_to_string(result.get('type_marche_facette', ''))
                 row['type_avis'] = iterable_to_string(result.get('type_avis', ''))
-
+                id_web = row['id']
+                url_pdf = f"https://www.boamp.fr/telechargements/PDF/2006/MPA20060126/{id_web}.pdf"
+                row['url_pdf'] = url_pdf
                 csvwriter.writerow(row)
     else:
         print("Erreur lors de l'accès à l'API : Code de statut", response.status_code)
