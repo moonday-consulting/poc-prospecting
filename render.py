@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.route('/')
 def display_csv():
     data = []
-    with open('api_data.csv', 'r') as file:
+    with open('api_data_with_responses.csv', 'r', encoding='utf-8') as file:
         csv_file = csv.DictReader(file, delimiter=';')
         for row in csv_file:
             data.append(row)

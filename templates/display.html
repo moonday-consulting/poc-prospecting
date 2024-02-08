@@ -9,14 +9,18 @@
         <tr>
             <th>ID</th>
             <th>Code Département</th>
+            <th>Objet</th>
             <th>Action</th>
         </tr>
         {% for row in data %}
-            <tr>
-                <td>{{ row['id'] }}</td>
-                <td>{{ row['code_departement'] }}</td>
-                <td><a href="{{ row['url_pdf'] }}" target="_blank"><button>PDF</button></a></td>
-            </tr>
+            {% if row['gpt_response'] == "TRUE" %}
+                <tr>
+                    <td>{{ row['id'] }}</td>
+                    <td>{{ row['code_departement'] }}</td>
+                    <td>{{ row['objet'] }}</td>
+                    <td><a href="{{ row['url_pdf'] }}" target="_blank"><button>PDF</button></a></td>
+                </tr>
+            {% endif %}
         {% endfor %}
     </table>
 </body>
