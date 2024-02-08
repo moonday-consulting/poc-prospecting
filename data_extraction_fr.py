@@ -10,7 +10,7 @@ def iterable_to_string(value):
     else:
         return str(value)
 def fetch_api_data_and_write_to_csv():
-    url = "https://boamp-datadila.opendatasoft.com/api/explore/v2.1/catalog/datasets/boamp/records?limit=100"
+    url = "https://boamp-datadila.opendatasoft.com/api/explore/v2.1/catalog/datasets/boamp/records?limit=100&order_by=dateparution DESC"
     response = requests.get(url)
 
     if response.status_code == 200:
@@ -43,8 +43,8 @@ def fetch_api_data_and_write_to_csv():
                 row['type_marche'] = iterable_to_string(result.get('type_marche', ''))
                 row['type_marche_facette'] = iterable_to_string(result.get('type_marche_facette', ''))
                 row['type_avis'] = iterable_to_string(result.get('type_avis', ''))
-                id_web = row['id']
-                url_pdf = f"https://www.boamp.fr/telechargements/PDF/2006/MPA20060126/{id_web}.pdf"
+                id_web = row['idweb']
+                url_pdf = f"https://www.boamp.fr/telechargements/FILES/PDF/2024/02/{id_web}.pdf"
                 row['url_pdf'] = url_pdf
                 csvwriter.writerow(row)
     else:
