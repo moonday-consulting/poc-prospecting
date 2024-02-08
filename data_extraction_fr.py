@@ -5,7 +5,7 @@ def fetch_api_data_and_write_to_csv(number_of_results=100):
     records_fetched = 0
     start = 0
     limit = 100
-    results_to_fetch = min(number_of_results, 500)
+    results_to_fetch = min(number_of_results, 1000)
     
     with open('api_data.csv', 'w', newline='', encoding='utf-8') as csvfile:
         fieldnames = [
@@ -43,4 +43,4 @@ def fetch_api_data_and_write_to_csv(number_of_results=100):
                 break
 
 if __name__ == "__main__":
-    fetch_api_data_and_write_to_csv(500)
+    fetch_api_data_and_write_to_csv(1000)

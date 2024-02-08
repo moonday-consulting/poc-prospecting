@@ -5,22 +5,54 @@
 </head>
 <body>
     <h1>Données CSV</h1>
+    <p>Nombre total de lignes : {{ total_rows }}</p>
+    <p>Nombre total de lignes avec le pays "SUISSE" : {{ total_switzerland }}</p>
+    <p>Nombre total de lignes avec le pays "FRANCE" : {{ total_france }}</p>
     <table>
+        <h1>Liste Moonday</h1>
+        <h2>Nombre de lignes affichées : {{ displayed_rows }}</h2>
         <tr>
             <th>ID</th>
-            <th>Code Département</th>
-            <th>Objet</th>
-            <th>Action</th>
+            <th>Pays</th>
+            <th>Description</th>
+            <th>Annonce complete (France pour le moment)</th>
         </tr>
         {% for row in data %}
-            {% if row['gpt_response'] == "TRUE" %}
+            {% if row['gpt_responses'] == "True" %}
                 <tr>
                     <td>{{ row['id'] }}</td>
-                    <td>{{ row['code_departement'] }}</td>
-                    <td>{{ row['objet'] }}</td>
-                    <td><a href="{{ row['url_pdf'] }}" target="_blank"><button>PDF</button></a></td>
+                    <td>{{ row['country'] }}</td>
+                    <td>{{ row['desc'] }}</td>
+                    <td>
+                        {% if row['url_pdf'] %}
+                            <a href="{{ row['url_pdf'] }}" target="_blank"><button>PDF</button></a>
+                        {% else %}
+                        {% endif %}
+                    </td>
                 </tr>
             {% endif %}
+        {% endfor %}
+    </table>
+    <table>
+        <h1>Liste complete</h1>
+        <tr>
+            <th>ID</th>
+            <th>Pays</th>
+            <th>Description</th>
+            <th>Annonce complete (France pour le moment)</th>
+        </tr>
+        {% for row in data %}
+            <tr>
+                <td>{{ row['id'] }}</td>
+                <td>{{ row['country'] }}</td>
+                <td>{{ row['desc'] }}</td>
+                <td>
+                    {% if row['url_pdf'] %}
+                        <a href="{{ row['url_pdf'] }}" target="_blank"><button>PDF</button></a>
+                    {% else %}
+                    {% endif %}
+                </td>
+            </tr>
         {% endfor %}
     </table>
 </body>

@@ -28,5 +28,23 @@ Moonday est le premier cabinet de conseil alliant le consulting traditionnel en 
         return f"Error: {e}"
 
 df = pd.read_csv("api_data.csv", sep=';')
-df["gpt_response"] = df["objet"].apply(query_gpt)
-df.to_csv("api_data_with_responses.csv", index=False, sep=';')
+df_unique = df.drop_duplicates(subset=["objet"])
+df_unique["gpt_response"] = df_unique["objet"].apply(query_gpt)
+df_unique.to_csv("api_data_with_responses.csv", index=False, sep=';')
+
+df = pd.read_csv("api_data_simap.csv")
+df_unique = df.drop_duplicates(subset=["description"])
+df_unique["gpt_response"] = df_unique["description"].apply(query_gpt)
+df_unique.to_csv("api_data_with_responses_simap.csv", index=False)
+
+df1 = pd.read_csv('api_data_with_responses.csv', sep=';')
+df2 = pd.read_csv('api_data_with_responses_simap.csv', sep=',')
+df1_transformed = df1[['idweb', 'objet', 'gpt_response', 'url_pdf']].copy()
+df1_transformed.columns = ['id', 'desc', 'gpt_responses', 'url_pdf']
+df1_transformed['country'] = 'FRANCE'
+df2_transformed = df2[['id', 'description', 'gpt_response']].copy()
+df2_transformed.columns = ['id', 'desc', 'gpt_responses']
+df2_transformed['url_pdf'] = ''
+df2_transformed['country'] = 'SUISSE'
+df_fusion = pd.concat([df1_transformed, df2_transformed], ignore_index=True)
+df_fusion.to_csv('api_data_fusion_moonday.csv', index=False)
