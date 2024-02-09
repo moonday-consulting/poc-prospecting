@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>CSV Data Display</title>
+</head>
+<body>
+    <h1>Données CSV</h1>
+    <p>Nombre total de lignes : {{ total_rows }}</p>
+    <p>Nombre total de lignes avec le pays "SUISSE" : {{ total_switzerland }}</p>
+    <p>Nombre total de lignes avec le pays "FRANCE" : {{ total_france }}</p>
+
+
+    {% for file_name, rows in data_by_file.items() %}
+        <h2>Liste {{ file_name | capitalize }}</h2>
+
+        <h2>Nombre de lignes affichées : {{ displayed_rows[file_name] }}</h2>
+
+        <table class="table-{{ file_name }}">
+            <tr>
+                <th>ID</th>
+                <th>Pays</th>
+                <th>Description</th>
+                <th>Annonce complete (France pour le moment)</th>
+            </tr>
+            {% for row in rows %}
+                {% if row['gpt_responses'] == "true" %}
+                    <tr>
+                        <td>{{ row['id'] }}</td>
+                        <td>{{ row['country'] }}</td>
+                        <td>{{ row['desc'] }}</td>
+                        <td>
+                            {% if row['url_pdf'] %}
+                                <a href="{{ row['url_pdf'] }}" target="_blank"><button>PDF</button></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    {% endfor %}
+
+
+    <table>
+        <h1>Liste complete</h1>
+        <tr>
+            <th>ID</th>
+            <th>Pays</th>
+            <th>Description</th>
+            <th>Annonce complete (France pour le moment)</th>
+        </tr>
+        {% for row in data_by_file['moonday'] %}
+            <tr>
+                <td>{{ row['id'] }}</td>
+                <td>{{ row['country'] }}</td>
+                <td>{{ row['desc'] }}</td>
+                <td>
+                    {% if row['url_pdf'] %}
+                        <a href="{{ row['url_pdf'] }}" target="_blank"><button>PDF</button></a>
+                    {% else %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+test
+</body>
+</html>

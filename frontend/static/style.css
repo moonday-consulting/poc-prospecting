@@ -1,0 +1,139 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin-bottom: 10px;
+    font-size: 1.5em;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a button {
+    display: inline-block;
+}
+
+
+
+
+/* Styles de base pour tous les tableaux */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Styles spécifiques pour chaque tableau */
+.table-moonday th {
+    background-color: #607D8B; /* Bleu gris */
+}
+
+.table-moonday tr:nth-child(even) {
+    background-color: #CFD8DC; /* Bleu gris clair */
+}
+
+.table-enedis th {
+    background-color: #FFC107; /* Ambre */
+}
+
+.table-enedis tr:nth-child(even) {
+    background-color: #FFF8E1; /* Ambre clair */
+}
+
+.table-lingenheld th {
+    background-color: #4CAF50; /* Vert */
+}
+
+.table-lingenheld tr:nth-child(even) {
+    background-color: #E8F5E9; /* Vert clair */
+}
+
+.table-novartis th {
+    background-color: #9C27B0; /* Pourpre */
+}
+
+.table-novartis tr:nth-child(even) {
+    background-color: #F3E5F5; /* Pourpre clair */
+}
+
+.table-solocal th {
+    background-color: #03A9F4; /* Bleu clair */
+}
+
+.table-solocal tr:nth-child(even) {
+    background-color: #E1F5FE; /* Bleu très clair */
+}
+
+.table-vinci th {
+    background-color: #FF9800; /* Orange */
+}
+
+.table-vinci tr:nth-child(even) {
+    background-color: #FFF3E0; /* Orange clair */
+}
