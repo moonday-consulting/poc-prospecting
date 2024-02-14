@@ -7,7 +7,6 @@ app = Flask(__name__)
 def display_csv():
     displayed_rows = {
         'moonday': 0,
-        'enedis': 0,
         'lingenheld': 0,
         'novartis': 0,
         'solocal': 0,
@@ -15,7 +14,6 @@ def display_csv():
     }
     data_by_file = {
         'moonday': [],
-        'enedis': [],
         'lingenheld': [],
         'novartis': [],
         'solocal': [],
@@ -23,7 +21,6 @@ def display_csv():
     }
     file_labels = {
         'data/api_data_fusion_moonday.csv': 'moonday',
-        'data/api_data_fusion_enedis.csv': 'enedis',
         'data/api_data_fusion_lingenheld.csv': 'lingenheld',
         'data/api_data_fusion_novartis.csv': 'novartis',
         'data/api_data_fusion_solocal.csv': 'solocal',
