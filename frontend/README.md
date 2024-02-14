@@ -25,7 +25,7 @@ Pour exécuter cette application, vous aurez besoin de Python et de Flask instal
 Pour lancer l'application, naviguez dans le répertoire contenant votre application Flask et exécutez le fichier Python principal. Utilisez la commande suivante dans votre terminal :
 
 ```
-python app.py
+python render.py
 ```
 
 Cela démarrera le serveur de développement Flask et rendra votre application accessible localement. Vous pouvez accéder à l'application en ouvrant votre navigateur et en naviguant vers `http://127.0.0.1:5000/`.
