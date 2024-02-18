@@ -15,7 +15,7 @@ import csv
 
 
 # Load environment variables from .env file
-load_dotenv("simap_credentials.env")
+load_dotenv()
 
 
 # Replace these with your Simap credentials
