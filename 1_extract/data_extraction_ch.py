@@ -15,7 +15,7 @@ import csv
 
 
 # Load environment variables from .env file
-load_dotenv()
+load_dotenv("../.env")
 
 
 # Replace these with your Simap credentials
@@ -81,7 +81,7 @@ except Exception as e:
 
 try:
     root = ET.fromstring(response)
-    with open('data/api_data_simap.csv', 'w', newline='', encoding='utf-8') as csvfile:
+    with open('../data/api_data_simap.csv', 'w', newline='', encoding='utf-8') as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(['id', 'description'])
         for item in root.findall(".//item"):
