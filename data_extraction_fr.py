@@ -7,7 +7,7 @@ def fetch_api_data_and_write_to_csv(number_of_results=100):
     limit = 100
     results_to_fetch = min(number_of_results, 1000)
     
-    with open('api_data.csv', 'w', newline='', encoding='utf-8') as csvfile:
+    with open('data/api_data_boamp.csv', 'w', newline='', encoding='utf-8') as csvfile:
         fieldnames = [
             'idweb', 'id', 'annonce_reference_schema_v110', 'objet', 'filename', 'famille',
             'code_departement', 'code_departement_prestation', 'famille_libelle', 'dateparution',
