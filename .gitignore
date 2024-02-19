@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 simap_credentials.env
 test_api.py
+2_analyze/analyze_moonday.py
