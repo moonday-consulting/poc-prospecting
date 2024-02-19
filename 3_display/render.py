@@ -1,50 +1,30 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import csv
+from collections import Counter
 
 app = Flask(__name__)
 
+def load_csv_data_and_count_relevance(filename):
+    data = []
+    relevances = []
+    with open(filename, newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            row['relevance'] = int(row['relevance'].replace('%', ''))
+            data.append(row)
+            relevances.append(row['relevance'])
+    sorted_data = sorted(data, key=lambda x: x['relevance'], reverse=True)
+
+    relevance_counts = Counter(relevances)
+    return  sorted_data, dict(relevance_counts)
+
 @app.route('/')
-def display_csv():
-    displayed_rows = {
-        'moonday': 0,
-        'lingenheld': 0,
-        'novartis': 0,
-        'solocal': 0,
-        'vinci': 0,
-    }
-    data_by_file = {
-        'moonday': [],
-        'lingenheld': [],
-        'novartis': [],
-        'solocal': [],
-        'vinci': [],
-    }
-    file_labels = {
-        'data/api_data_fusion_moonday.csv': 'moonday',
-        'data/api_data_fusion_lingenheld.csv': 'lingenheld',
-        'data/api_data_fusion_novartis.csv': 'novartis',
-        'data/api_data_fusion_solocal.csv': 'solocal',
-        'data/api_data_fusion_vinci.csv': 'vinci',
-    }
+def index():
+    data, relevance_counts = load_csv_data_and_count_relevance('../data/api_data_fusion_moonday_test_relevance.csv')
+    true_positives = ['24-14728', '24-15217', '24-15222', '274039', '24-14766']
+    false_positives = ['24-15828', '272874']
+    return render_template('display.html', data=data, relevance_counts=relevance_counts, true_positives=true_positives, false_positives=false_positives)
 
-    for file_name, label in file_labels.items():
-        with open(file_name, 'r', encoding='utf-8') as file:
-            csv_file = csv.DictReader(file)
-            total_rows = 0
-            total_switzerland = 0
-            total_france = 0
-            for row in csv_file:
-                total_rows += 1
-                if row.get('country', '').upper() == 'SUISSE':
-                    total_switzerland += 1
-                elif row.get('country', '').upper() == 'FRANCE':
-                    total_france += 1
-                if row.get('gpt_responses', '') == "true":
-                    displayed_rows[label] += 1
-                pass
-                data_by_file[label].append(row)
-
-    return render_template('display.html', data_by_file=data_by_file, total_rows=total_rows, total_switzerland=total_switzerland, total_france=total_france, displayed_rows=displayed_rows)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,70 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+
 <head>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>POC TENDERS</title>
+    <title>Appels d'offres</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var ctx = document.getElementById('relevanceChart').getContext('2d');
+            var relevanceCounts = {{ relevance_counts | tojson
+        }};
+        var labels = Object.keys(relevanceCounts).map(function (key) {
+            return key + '%';
+        });
+        var data = Object.values(relevanceCounts);
+
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Niveau de pertinence',
+                    data: data,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+            }
+        });
+        });
+    </script>
+
 </head>
+
 <body>
-    <h1>POC TENDERS</h1>
-    <p>Nombre total de lignes : {{ total_rows }}</p>
-    <p>Nombre total de lignes avec le pays "SUISSE" : {{ total_switzerland }}</p>
-    <p>Nombre total de lignes avec le pays "FRANCE" : {{ total_france }}</p>
+    <h1>Appels d'offres</h1>
+    <div>
+        <input type="text" id="searchInput" onkeyup="filterData()" placeholder="Rechercher par description...">
+        {% for i in range(0, 101, 10) %}
+        <label>
+            <input type="checkbox" onchange="filterRelevance()" name="relevance" value="{{ i }}"> {{ i }}% - {{
+            relevance_counts.get(i, 0) }}
+        </label>
+        {% endfor %}
+    </div>
 
+    <div>
+        <canvas id="relevanceChart"></canvas>
+    </div>
 
-    {% for file_name, rows in data_by_file.items() %}
-        <h2>Liste {{ file_name | capitalize }}</h2>
-
-        <h2>Nombre de lignes affichées : {{ displayed_rows[file_name] }}</h2>
-
-        <table class="table-{{ file_name }}">
-            <tr>
-                <th>ID</th>
-                <th>Pays</th>
-                <th>Description</th>
-                <th>Annonce complete (France pour le moment)</th>
-            </tr>
-            {% for row in rows %}
-                {% if row['gpt_responses'] == "true" %}
-                    <tr>
-                        <td>{{ row['id'] }}</td>
-                        <td>{{ row['country'] }}</td>
-                        <td>{{ row['desc'] }}</td>
-                        <td>
-                            {% if row['url_pdf'] %}
-                                <a href="{{ row['url_pdf'] }}" target="_blank"><button>PDF</button></a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        </table>
-    {% endfor %}
-
-
-    <table>
-        <h1>Liste complete</h1>
+    <table id="dataTable">
         <tr>
             <th>ID</th>
-            <th>Pays</th>
             <th>Description</th>
-            <th>Annonce complete (France pour le moment)</th>
+            <th>Pertinence</th>
+            <th>PDF URL (BOAMP FRANCE)</th>
+            <th>Pays</th>
         </tr>
-        {% for row in data_by_file['moonday'] %}
-            <tr>
-                <td>{{ row['id'] }}</td>
-                <td>{{ row['country'] }}</td>
-                <td>{{ row['desc'] }}</td>
-                <td>
-                    {% if row['url_pdf'] %}
-                        <a href="{{ row['url_pdf'] }}" target="_blank"><button>PDF</button></a>
-                    {% else %}
-                    {% endif %}
-                </td>
-            </tr>
+        {% for row in data %}
+        <tr {% if row['id'] in true_positives %} style="background-color: #4CAF50;" {% elif row['id'] in false_positives
+            %} style="background-color: #F44336;" {% endif %}>
+            <td>{{ row['id'] }}</td>
+            <td>{{ row['desc'] }}</td>
+            <td>{{ row['relevance'] }}</td>
+            <td><a href="{{ row['url_pdf'] }}">PDF</a></td>
+            <td>{{ row['country'] }}</td>
+        </tr>
         {% endfor %}
     </table>
 
+    <script>
+        function filterData() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("dataTable");
+            tr = table.getElementsByTagName("tr");
 
-test
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+        function filterRelevance() {
+            var checkboxes = document.querySelectorAll('input[name="relevance"]:checked');
+            var selectedRelevances = Array.from(checkboxes).map(cb => cb.value);
+            var table, tr, td, i, txtValue;
+            table = document.getElementById("dataTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 1; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[2];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (selectedRelevances.length === 0 || selectedRelevances.includes(txtValue.trim())) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
 </body>
+
 </html>
