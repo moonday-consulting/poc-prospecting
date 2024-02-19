@@ -2,7 +2,7 @@ import openai
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+load_dotenv("../.env")
 
 class OpenAIQuery:
     def __init__(self, query_file='../data/query.txt'):
@@ -20,7 +20,7 @@ class OpenAIQuery:
     def query_gpt(self, row):
         try:
             completion = openai.ChatCompletion.create(
-                model="gpt-4-0125-preview",
+                model="gpt-3.5-turbo-16k-0613",
                 messages=[
                     {"role": "system", "content": self.query},
                     {"role": "user", "content": row},
